@@ -14,7 +14,7 @@ public class Departamento {
 
 	public Departamento(String siglas, String nome) throws ModelException {
 		this.setSiglas(siglas);
-		this.SetNome(nome);
+		this.setNome(nome);
 		this.listaEmpregado = new ArrayList<>();
 	}
 
@@ -24,7 +24,7 @@ public class Departamento {
 
 	public void setSiglas(String sigla) throws ModelException {
 		Departamento.validarSigla(sigla);
-		this.siglas = siglas;
+		this.siglas = sigla;
 	}
 
 	public String getNome() {
@@ -72,9 +72,9 @@ public class Departamento {
 
 	public static void validarNome(String nome) throws ModelException {
 		if (nome == null || nome.length() == 0) {
-			throw new ModelException("O nome do Departamento não pode ser nula!");
+			throw new ModelException("O nome do Departamento não pode ser nulo!");
 		}
-		if (nome.length() != TAMANHO_MAX_NOME) {
+		if (nome.length() > TAMANHO_MAX_NOME) {
 			throw new ModelException("A sigla deve ter " + TAMANHO_MAX_NOME + " carascteres maiúsculos");
 		}
 		for (int i = 0; i < nome.length(); i++) {
@@ -86,11 +86,15 @@ public class Departamento {
 	}
 
 	public static void validarListaEmpregados(ArrayList<Empregado> listaEmpregado) throws ModelException {
-		throw new ModelException("Lista de empregados do Departamento ");
+		if (listaEmpregado == null) {
+			throw new ModelException("Lista de empregados do Departamento ");			
+		}
 	}
 
 	public static void validarGerente(Empregado gerente) throws ModelException {
-		throw new ModelException("O gerente do departamento não");
+		if (gerente == null) {
+			throw new ModelException("O gerente do departamento não");			
+		}
 	}
 
 }
