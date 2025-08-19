@@ -3,32 +3,44 @@ package model;
 import java.util.ArrayList;
 
 public class Departamento {
-	private String siglas;
+	//
+	// CONSTANTES
+	//
+	final public static int TAMANHO_SIGLA = 2;
+	final public static int TAMANHO_MAX_NOME = 20;
+
+	//
+	// ATRIBUTOS
+	//
+	private String sigla;
 	private String nome;
 
+	//
+	// ATRIBUTOS DE RELACIONAMENTO
+	//
+	private ArrayList<Empregado> listaEmpregados;
 	private Empregado gerente;
-	private ArrayList<Empregado> listaEmpregado;
 
-	static final int TAMANHO_SIGLA = 2;
-	static final int TAMANHO_MAX_NOME = 20;
-
-	public Departamento(String siglas, String nome) throws ModelException {
-		this.setSiglas(siglas);
+	//
+	// MÉTODOS
+	//
+	public Departamento(String sigla, String nome) throws ModelException {
+		this.setSigla(sigla);
 		this.setNome(nome);
-		this.listaEmpregado = new ArrayList<>();
+		this.listaEmpregados = new ArrayList<Empregado>();
 	}
 
-	public String getSiglas() {
-		return this.siglas;
+	public String getSigla() {
+		return this.sigla;
 	}
 
-	public void setSiglas(String sigla) throws ModelException {
+	public void setSigla(String sigla) throws ModelException {
 		Departamento.validarSigla(sigla);
-		this.siglas = sigla;
+		this.sigla = sigla;
 	}
 
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 
 	public void setNome(String nome) throws ModelException {
@@ -36,65 +48,73 @@ public class Departamento {
 		this.nome = nome;
 	}
 
+	public ArrayList<Empregado> getListaEmpregados() {
+		// Não passamos o objeto de coleção diretamente.
+		// Criamos uma cópia dele através da instanciação
+		// de um novo ArrayList.
+		return new ArrayList<>(this.listaEmpregados);
+	}
+
+	public void setListaEmpregados(ArrayList<Empregado> listaEmpregados) throws ModelException {
+		Departamento.validarListaEmpregados(listaEmpregados);
+		this.listaEmpregados = listaEmpregados;
+	}
+	
+	public boolean adicionarEmpregado(Empregado novo) throws ModelException {
+		Departamento.validarEmpregado(novo);
+		return this.listaEmpregados.add(novo);
+	}
+	
+	public boolean removerEmpregado(Empregado ex) throws ModelException {
+		Departamento.validarEmpregado(ex);
+		return this.listaEmpregados.remove(ex);		
+	}
+
 	public Empregado getGerente() {
-		return gerente;
+		return this.gerente;
 	}
 
 	public void setGerente(Empregado gerente) throws ModelException {
-		Departamento.validarGerente(gerente);
+		Departamento.validarGerente(gerente, this.listaEmpregados);
 		this.gerente = gerente;
 	}
 
-	public ArrayList<Empregado> getListaEmpregado() {
-		// não passa diretamento apenas a cópia
-		return new ArrayList<>(this.listaEmpregado);
-	}
-
-	public  void setListaEmpregado(ArrayList<Empregado> listaEmpregado) throws ModelException {
-		Departamento.validarListaEmpregados(listaEmpregado);
-		this.listaEmpregado = listaEmpregado;
-	}
-
-	public static void validarSigla(String siglas) throws ModelException {
-		if (siglas == null || siglas.length() == 0) {
+	public static void validarSigla(String sigla) throws ModelException {
+		if (sigla == null || sigla.length() == 0)
 			throw new ModelException("A sigla do Departamento não pode ser nula!");
-		}
-		if (siglas.length() != TAMANHO_SIGLA) {
-			throw new ModelException("A sigla deve ter " + TAMANHO_SIGLA + " carascteres maiúsculos");
-		}
+		if (sigla.length() != TAMANHO_SIGLA)
+			throw new ModelException("A sigla deve ter " + TAMANHO_SIGLA + " letras maiúsculos!");
 		for (int i = 0; i < TAMANHO_SIGLA; i++) {
-			char c = siglas.charAt(i);
-			if (!Character.isUpperCase(c)) {
-				throw new ModelException("O caracter na posição" + i + "não é letra maiúscula!");
-			}
+			char c = sigla.charAt(i);
+			if (!Character.isUpperCase(c))
+				throw new ModelException("O caracter na posição " + i + " não é letra maiúscula!");
 		}
 	}
 
 	public static void validarNome(String nome) throws ModelException {
-		if (nome == null || nome.length() == 0) {
+		if (nome == null || nome.length() == 0)
 			throw new ModelException("O nome do Departamento não pode ser nulo!");
-		}
-		if (nome.length() > TAMANHO_MAX_NOME) {
-			throw new ModelException("A sigla deve ter " + TAMANHO_MAX_NOME + " carascteres maiúsculos");
-		}
+		if (nome.length() > TAMANHO_MAX_NOME)
+			throw new ModelException("O nome deve ter até " + TAMANHO_MAX_NOME + " caracteres!");
 		for (int i = 0; i < nome.length(); i++) {
 			char c = nome.charAt(i);
-			if (!Character.isUpperCase(c) && !Character.isSpaceChar(c)) {
-				throw new ModelException("O caracter na posição" + i + "não é válido");
-			}
+			if (!Character.isAlphabetic(c) && !Character.isSpaceChar(c))
+				throw new ModelException("O caracter na posição " + i + " não é válido!");
 		}
 	}
 
-	public static void validarListaEmpregados(ArrayList<Empregado> listaEmpregado) throws ModelException {
-		if (listaEmpregado == null) {
-			throw new ModelException("Lista de empregados do Departamento ");			
-		}
+	public static void validarListaEmpregados(ArrayList<Empregado> listaEmpregados) throws ModelException {
+		if (listaEmpregados == null)
+			throw new ModelException("A Lista de Empregados do Departamento não pode ser nulo!");
 	}
 
-	public static void validarGerente(Empregado gerente) throws ModelException {
-		if (gerente == null) {
-			throw new ModelException("O gerente do departamento não");			
-		}
+	public static void validarGerente(Empregado gerente, ArrayList<Empregado> listaEmpregados) throws ModelException {
+		if( ! listaEmpregados.contains(gerente))
+			throw new ModelException("O gerente deve fazer parte da lista de empregados do departamento!");
 	}
 
+	public static void validarEmpregado(Empregado e) throws ModelException {
+		if(e == null)
+			throw new ModelException("É necessário indicar o empregado para essa operação");
+	}
 }
