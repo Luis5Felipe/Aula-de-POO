@@ -80,7 +80,7 @@ public class Departamento {
 	}
 
 	public static void validarSigla(String sigla) throws ModelException {
-		if (sigla == null || sigla.length() == 0)
+		if (sigla == null || sigla.trim().isEmpty())
 			throw new ModelException("A sigla do Departamento não pode ser nula!");
 		if (sigla.length() != TAMANHO_SIGLA)
 			throw new ModelException("A sigla deve ter " + TAMANHO_SIGLA + " letras maiúsculos!");
@@ -92,7 +92,7 @@ public class Departamento {
 	}
 
 	public static void validarNome(String nome) throws ModelException {
-		if (nome == null || nome.length() == 0)
+		if (nome == null || nome.trim().isEmpty())
 			throw new ModelException("O nome do Departamento não pode ser nulo!");
 		if (nome.length() > TAMANHO_MAX_NOME)
 			throw new ModelException("O nome deve ter até " + TAMANHO_MAX_NOME + " caracteres!");

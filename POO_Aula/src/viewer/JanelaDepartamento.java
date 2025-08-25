@@ -20,64 +20,64 @@ public class JanelaDepartamento extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tfSigla;
+	private JLabel lblNewLabel_1;
 	private JTextField tfNome;
 
-	
 	public JanelaDepartamento() {
 		setTitle("Departamento");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 418, 246);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		JLabel Siglas = new JLabel("Sigla :");
-		Siglas.setBounds(10, 41, 38, 33);
-		contentPane.add(Siglas);
-
+		
+		JLabel lblNewLabel = new JLabel("Sigla:");
+		lblNewLabel.setBounds(32, 44, 46, 14);
+		contentPane.add(lblNewLabel);
+		
 		tfSigla = new JTextField();
-		tfSigla.setBounds(48, 44, 150, 26);
+		tfSigla.setBounds(77, 41, 86, 20);
 		contentPane.add(tfSigla);
 		tfSigla.setColumns(Departamento.TAMANHO_SIGLA);
-
-		JLabel Nome = new JLabel("Nome :");
-		Nome.setBounds(10, 105, 46, 14);
-		contentPane.add(Nome);
-
+		
+		lblNewLabel_1 = new JLabel("Nome:");
+		lblNewLabel_1.setBounds(32, 86, 46, 14);
+		contentPane.add(lblNewLabel_1);
+		
 		tfNome = new JTextField();
-		tfNome.setBounds(48, 99, 302, 26);
+		tfNome.setBounds(77, 83, 265, 20);
 		contentPane.add(tfNome);
 		tfNome.setColumns(10);
-
-		JButton btOK = new JButton("Ok");
-		btOK.addActionListener(new ActionListener() {
+		
+		JButton btOk = new JButton("Ok");
+		btOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String sigla = tfSigla.getText();
-				String nome = tfNome.getName();
+				String nome = tfNome.getText();
 				try {
-					Departamento novo = new Departamento(sigla, nome);
-					JOptionPane.showMessageDialog(btOK, "Departamento Criado ");
+					Departamento novo = new Departamento(sigla,nome);
 					DaoDepartamento dao = new DaoDepartamento();
 					dao.adicionar(novo);
+					JOptionPane.showMessageDialog(btOk, "Departamento Criado!");
 					setVisible(false);
 				} catch (ModelException e1) {
-					JOptionPane.showMessageDialog(btOK, e1.getMessage());
+					JOptionPane.showMessageDialog(btOk, e1.getMessage());
 				}
-
 			}
 		});
-		btOK.setBounds(48, 161, 89, 23);
-		contentPane.add(btOK);
-
-		JButton btOCancelar = new JButton("Cancelar");
-		btOCancelar.addActionListener(new ActionListener() {
+		btOk.setBounds(77, 141, 89, 23);
+		contentPane.add(btOk);
+		
+		JButton btCancelar = new JButton("Cancelar");
+		btCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
 		});
-		btOCancelar.setBounds(316, 161, 89, 23);
-		contentPane.add(btOCancelar);
+		btCancelar.setBounds(253, 141, 89, 23);
+		contentPane.add(btCancelar);
 		this.setVisible(true);
 	}
 }

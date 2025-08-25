@@ -1,66 +1,102 @@
 package viewer;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import model.Departamento;
+import model.Empregado;
+import model.ModelException;
 import model.dao.DaoDepartamento;
+import model.dao.DaoEmpregado;
 
 public class JanelaEmpregado extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField tfCpf;
+	private JLabel lblNewLabel_1;
+	private JTextField tfNome;
+	private JLabel lblNewLabel_2;
+	private JComboBox cbDepartamento;
 
-	
+	/**
+	 * Create the frame.
+	 */
 	public JanelaEmpregado() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setTitle("Empregado");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 418, 266);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("CPF:");
-		lblNewLabel.setBounds(37, 29, 46, 14);
+		lblNewLabel.setBounds(32, 44, 46, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(37, 129, 46, 14);
+		tfCpf = new JTextField();
+		tfCpf.setBounds(77, 41, 206, 20);
+		contentPane.add(tfCpf);
+		tfCpf.setColumns(Departamento.TAMANHO_SIGLA);
+		
+		lblNewLabel_1 = new JLabel("Nome:");
+		lblNewLabel_1.setBounds(32, 86, 46, 14);
 		contentPane.add(lblNewLabel_1);
 		
-		textField = new JTextField();
-		textField.setBounds(93, 26, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		tfNome = new JTextField();
+		tfNome.setBounds(77, 83, 265, 20);
+		contentPane.add(tfNome);
+		tfNome.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(93, 54, 86, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		JButton btOk = new JButton("Ok");
+		btOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String cpf = tfCpf.getText();
+				String nome = tfNome.getText();
+				Departamento depto = (Departamento)cbDepartamento.getSelectedItem();
+				try {
+					Empregado novo = new Empregado(cpf,nome,depto);
+					DaoEmpregado dao = new DaoEmpregado();
+					dao.adicionar(novo);
+					JOptionPane.showMessageDialog(btOk, "Empregado Criado!");
+					setVisible(false);
+				} catch (ModelException e1) {
+					JOptionPane.showMessageDialog(btOk, e1.getMessage());
+				}
+			}
+		});
+		btOk.setBounds(77, 176, 89, 23);
+		contentPane.add(btOk);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(37, 96, 143, 22);
-		contentPane.add(comboBox);
+		JButton btCancelar = new JButton("Cancelar");
+		btCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		btCancelar.setBounds(253, 176, 89, 23);
+		contentPane.add(btCancelar);
 		
-		JButton btnNewButton = new JButton("OK");
-		btnNewButton.setBounds(37, 176, 89, 23);
-		contentPane.add(btnNewButton);
+		lblNewLabel_2 = new JLabel("Departamento:");
+		lblNewLabel_2.setBounds(32, 125, 89, 14);
+		contentPane.add(lblNewLabel_2);
 		
-		JButton btnNewButton_1 = new JButton("Cancelar");
-		btnNewButton_1.setBounds(144, 176, 89, 23);
-		contentPane.add(btnNewButton_1);
+		DaoDepartamento dao = new DaoDepartamento();
+		cbDepartamento = new JComboBox(dao.obterTodos().toArray());
+		cbDepartamento.setBounds(121, 121, 221, 22);
+		contentPane.add(cbDepartamento);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Nome");
-		lblNewLabel_1_1.setBounds(37, 57, 46, 14);
-		contentPane.add(lblNewLabel_1_1);
-		
-		
-
+		this.setVisible(true);
 	}
 }
