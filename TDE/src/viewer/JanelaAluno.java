@@ -2,104 +2,87 @@ package viewer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import model.Aluno;
+import controller.CtrlIncluirAluno;
 import model.Curso;
-import model.ModelException;
-import model.dao.DaoAluno;
-import model.dao.DaoCurso; 
+import model.dao.DaoCurso;
 
 public class JanelaAluno extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane; 
+	private JPanel contentPane;
 	private JTextField tfNome;
 	private JTextField tfMatricula;
 	private JComboBox<Curso> cbCurso;
 	private JButton btCancelar;
-
-	public JanelaAluno() {
+	private CtrlIncluirAluno ctrl;
+	
+	public JanelaAluno(CtrlIncluirAluno c) {
 		setTitle("Cadastro de Aluno");
+		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lbNome = new JLabel("Nome:");
 		lbNome.setBounds(10, 25, 56, 14);
 		contentPane.add(lbNome);
-		
+
 		tfNome = new JTextField();
 		tfNome.setBounds(80, 22, 200, 20);
 		contentPane.add(tfNome);
 		tfNome.setColumns(10);
-		
+
 		JLabel lbMatricula = new JLabel("Matrícula:");
 		lbMatricula.setBounds(10, 65, 82, 14);
 		contentPane.add(lbMatricula);
-		
+
 		tfMatricula = new JTextField();
 		tfMatricula.setColumns(10);
 		tfMatricula.setBounds(80, 62, 127, 20);
 		contentPane.add(tfMatricula);
-		
+
 		JLabel lbCurso = new JLabel("Curso:");
 		lbCurso.setBounds(10, 105, 82, 14);
 		contentPane.add(lbCurso);
-		
-		
+
 		DaoCurso daoCurso = new DaoCurso();
 		cbCurso = new JComboBox<>(daoCurso.obterTodos().toArray(new Curso[0]));
 		cbCurso.setBounds(80, 101, 200, 22);
 		contentPane.add(cbCurso);
-		
+
 		JButton salvar = new JButton("Salvar");
 		salvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					String nome = tfNome.getText();
-			        int matricula = Integer.parseInt(tfMatricula.getText()); 
-			        Curso cursoSelecionado = (Curso) cbCurso.getSelectedItem(); 
-			        
-			        Aluno aluno = new Aluno(matricula, nome, cursoSelecionado);
-			        DaoAluno dao = new DaoAluno();
-			        dao.adicionar(aluno);
-			      
-			        JOptionPane.showMessageDialog(salvar, "Aluno Criado!");
-			        setVisible(false);
-			        
-				} catch (ModelException e1) {
-					JOptionPane.showMessageDialog(salvar, "Erro de Validação: " + e1.getMessage());
-				
-				
-				} catch (NumberFormatException e2) {
-					JOptionPane.showMessageDialog(salvar, "A matrícula deve ser um número válido.");
-				}
-			
+				String nome = tfNome.getText();
+				int matricula = Integer.parseInt(tfMatricula.getText());
+				Curso cursoSelecionado = (Curso) cbCurso.getSelectedItem();
+				ctrl.CtrlIncluirNovoAluno(matricula, nome, cursoSelecionado);
 			}
 		});
 		salvar.setBounds(100, 160, 89, 23);
 		contentPane.add(salvar);
-		
+
 		btCancelar = new JButton("Cancelar");
 		btCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				ctrl.cancelarCasoDeUso();
 			}
 		});
 		btCancelar.setBounds(230, 160, 89, 23);
 		contentPane.add(btCancelar);
-		
+
 		this.setVisible(true);
 	}
 }

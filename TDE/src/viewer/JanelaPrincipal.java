@@ -1,23 +1,24 @@
 package viewer;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import controller.CtrlPrograma;
 
 public class JanelaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private CtrlPrograma ctrl;
 
-	public JanelaPrincipal() {
+	public JanelaPrincipal(CtrlPrograma c) {
 		setTitle("Menu Principal");
+		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -28,7 +29,7 @@ public class JanelaPrincipal extends JFrame {
 		JButton btCurso = new JButton("curso");
 		btCurso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new JanelaCurso();
+				ctrl.iniciarIncluirCurso();
 			}
 		});
 		btCurso.setBounds(29, 42, 146, 73);
@@ -37,7 +38,7 @@ public class JanelaPrincipal extends JFrame {
 		JButton btAluno = new JButton("Aluno");
 		btAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new JanelaAluno();
+				ctrl.iniciarIncluirAluno();
 			}
 		});
 		btAluno.setBounds(278, 42, 146, 73);
@@ -46,7 +47,7 @@ public class JanelaPrincipal extends JFrame {
 		JButton btFechar = new JButton("Fechar");
 		btFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				ctrl.fecharPrograma();
 			}
 		});
 		btFechar.setBounds(29, 148, 146, 73);

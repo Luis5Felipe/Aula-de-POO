@@ -6,14 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import model.Curso;
-import model.ModelException;
-import model.dao.DaoCurso;
+import controller.CtrlIncluirCurso;
 
 public class JanelaCurso extends JFrame {
 
@@ -21,8 +18,10 @@ public class JanelaCurso extends JFrame {
 	private JPanel JanelaCurso;
 	private JTextField tfCodigo;
 	private JTextField tfNome;
+	private CtrlIncluirCurso ctrl;
 
-	public JanelaCurso() {
+	public JanelaCurso(CtrlIncluirCurso c) {
+		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		JanelaCurso = new JPanel();
@@ -58,16 +57,7 @@ public class JanelaCurso extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nome = tfNome.getText();
 				int codigo = Integer.parseInt(tfCodigo.getText());
-				
-				try {
-					Curso curso = new Curso(codigo, nome);
-					DaoCurso dao = new DaoCurso();
-					dao.adicionar(curso);
-					JOptionPane.showMessageDialog(salvar, "Curso Criado!");
-					setVisible(false);
-				}catch(ModelException e1){
-					JOptionPane.showMessageDialog(salvar, e1.getMessage());
-				}
+				ctrl.incluirNovoCurso(codigo, nome);
 			}
 		});
 		salvar.setBounds(52, 155, 89, 23);
@@ -76,7 +66,7 @@ public class JanelaCurso extends JFrame {
 		JButton cancelar = new JButton("Cancelar");
 		cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				ctrl.cancelarCasoDeUso();
 			}
 		});
 		cancelar.setBounds(251, 155, 89, 23);
