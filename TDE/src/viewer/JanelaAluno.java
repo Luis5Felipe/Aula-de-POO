@@ -15,7 +15,7 @@ import controller.CtrlIncluirAluno;
 import model.Curso;
 import model.dao.DaoCurso;
 
-public class JanelaAluno extends JFrame {
+public class JanelaAluno extends JanelaAbstrata{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -26,6 +26,7 @@ public class JanelaAluno extends JFrame {
 	private CtrlIncluirAluno ctrl;
 	
 	public JanelaAluno(CtrlIncluirAluno c) {
+		super(c);
 		setTitle("Cadastro de Aluno");
 		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,12 +78,20 @@ public class JanelaAluno extends JFrame {
 		btCancelar = new JButton("Cancelar");
 		btCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.cancelarCasoDeUso();
+				ctrl.encerrar();
 			}
 		});
 		btCancelar.setBounds(230, 160, 89, 23);
 		contentPane.add(btCancelar);
 
 		this.setVisible(true);
+	}
+	
+	public void atualizarCursos(Object[] listaCursos) {
+		if(this.cbCurso != null) 
+			this.remove(cbCurso);
+		cbCurso = new JComboBox(listaCursos);
+		cbCurso.setBounds(121, 121, 221, 22);
+		contentPane.add(cbCurso);
 	}
 }

@@ -1,38 +1,61 @@
 package controller;
 
-import javax.swing.JOptionPane;
-
 import model.Aluno;
 import model.Curso;
 import model.ModelException;
 import model.dao.DaoAluno;
+import model.dao.DaoCurso;
 import viewer.JanelaAluno;
 
-public class CtrlIncluirAluno {
-	final private CtrlPrograma ctrlPai;
-	private JanelaAluno janela;
+public class CtrlIncluirAluno extends CtrlAbstrato {
 
-	public CtrlIncluirAluno(CtrlPrograma c) {
-		this.ctrlPai = c;
+	private JanelaAluno janela;
+	private Aluno novo;
+	private CtrlIncluirCurso ctrlIncluirCurso;
+
+	public CtrlIncluirAluno(CtrlAbstrato c) {
+		super(c);
 		this.janela = new JanelaAluno(this);
 		this.janela.setVisible(true);
+		DaoCurso dao = new DaoCurso();
+		this.janela.atualizarCursos(dao.obterTodos().toArray());
+		this.janela.apresentar();
 	}
 
 	public void CtrlIncluirNovoAluno(int matricula, String nome, Curso idcurso) {
 		try {
-			Aluno novo = new Aluno(matricula, nome, idcurso);
+			this.novo = new Aluno(matricula, nome, idcurso);
 			DaoAluno dao = new DaoAluno();
-			dao.adicionar(novo);
-			JOptionPane.showMessageDialog(null, "Aluno Matrículado!");
+			dao.adicionar(this.novo);
+			this.janela.notificar("Aluno Matrículado!");
 			this.janela.setVisible(false);
-			this.ctrlPai.incluirAlunoFinalizado();
+			this.encerrar();
 		} catch (ModelException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage());
+			this.janela.notificar(e1.getMessage());
 		}
 	}
 
-	public void cancelarCasoDeUso() {
+	public Object getBemTangivel() {
+		return this.novo;
+	}
+
+	public void iniciarIncluirCurso() {
+		if (this.ctrlIncluirCurso == null) {
+			this.ctrlIncluirCurso = new CtrlIncluirCurso(this);
+		} else {
+			this.janela.notificar("Este caso de uso já está em uso");
+		}
+	}
+
+	public void incluirCursoFinalizado() {
+		this.ctrlIncluirCurso = null;
+		DaoAluno dao = new DaoAluno();
+		this.janela.atualizarCursos(dao.obterTodos().toArray());
+	}
+
+	public void encerrar() {
 		this.janela.setVisible(false);
-		this.ctrlPai.incluirAlunoFinalizado();
+		CtrlPrograma c = (CtrlPrograma) this.getCtrlpai();
+		c.incluirAlunoFinalizado();
 	}
 }

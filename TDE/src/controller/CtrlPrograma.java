@@ -4,14 +4,16 @@ import javax.swing.JOptionPane;
 
 import viewer.JanelaPrincipal;
 
-public class CtrlPrograma {
+public class CtrlPrograma extends CtrlAbstrato {
+	
 	private JanelaPrincipal janelaPrincipal;
 	private CtrlIncluirAluno ctrlIncluirAluno;
 	private CtrlIncluirCurso ctrlIncluirCurso;
 	
 	public CtrlPrograma() {
+		super(null);
 		this.janelaPrincipal = new JanelaPrincipal(this);
-		this.janelaPrincipal.setVisible(true);
+		this.janelaPrincipal.apresentar();
 	}
 	
 	
@@ -19,7 +21,7 @@ public class CtrlPrograma {
 		if(this.ctrlIncluirCurso == null)
 			this.ctrlIncluirCurso = new CtrlIncluirCurso(this);
 		else
-			JOptionPane.showMessageDialog(null, "Este Caso de Uso já está em execução!");
+			this.janelaPrincipal.notificar("Este Caso de Uso já está em execução!");
 	}
 	
 	public void incluirCursoFinalizado() {
@@ -30,17 +32,21 @@ public class CtrlPrograma {
 		if(this.ctrlIncluirAluno == null)
 			this.ctrlIncluirAluno = new CtrlIncluirAluno(this);
 		else
-			JOptionPane.showMessageDialog(null, "Este Caso de Uso já está em execução!");
+			this.janelaPrincipal.notificar("Este Caso de Uso já está em execução!");
 	}
 	
 	public void incluirAlunoFinalizado() {
 		this.ctrlIncluirAluno = null;		
 	}
 	
-	public void fecharPrograma() {
+	public void encerrar() {
 		System.exit(0);
 	}
 
+	public Object getBemTangivel() {
+		return null;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		new CtrlPrograma();
 	}

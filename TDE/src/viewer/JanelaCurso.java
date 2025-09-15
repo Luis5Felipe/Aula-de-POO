@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.CtrlIncluirCurso;
 
-public class JanelaCurso extends JFrame {
+public class JanelaCurso extends JanelaAbstrata {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel JanelaCurso;
@@ -21,6 +21,7 @@ public class JanelaCurso extends JFrame {
 	private CtrlIncluirCurso ctrl;
 
 	public JanelaCurso(CtrlIncluirCurso c) {
+		super(c);
 		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -66,13 +67,11 @@ public class JanelaCurso extends JFrame {
 		JButton cancelar = new JButton("Cancelar");
 		cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.cancelarCasoDeUso();
+				ctrl.encerrar();
 			}
 		});
 		cancelar.setBounds(251, 155, 89, 23);
 		JanelaCurso.add(cancelar);
-		this.setVisible(true);
-
 	}
 
 }

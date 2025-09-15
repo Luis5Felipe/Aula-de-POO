@@ -10,13 +10,14 @@ import javax.swing.border.EmptyBorder;
 
 import controller.CtrlPrograma;
 
-public class JanelaPrincipal extends JFrame {
+public class JanelaPrincipal extends JanelaAbstrata {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private CtrlPrograma ctrl;
 
 	public JanelaPrincipal(CtrlPrograma c) {
+		super(c);
 		setTitle("Menu Principal");
 		this.ctrl = c;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,11 +48,10 @@ public class JanelaPrincipal extends JFrame {
 		JButton btFechar = new JButton("Fechar");
 		btFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.fecharPrograma();
+				ctrl.encerrar();
 			}
 		});
 		btFechar.setBounds(29, 148, 146, 73);
 		contentPane.add(btFechar);
-		this.setVisible(true);
 	}
 }

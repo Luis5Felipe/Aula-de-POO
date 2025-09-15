@@ -7,31 +7,42 @@ import model.ModelException;
 import model.dao.DaoCurso;
 import viewer.JanelaCurso;
 
-public class CtrlIncluirCurso {
-	final private CtrlPrograma ctrlPai;
-	private JanelaCurso janela;
+public class CtrlIncluirCurso  extends CtrlAbstrato{
 
-	public CtrlIncluirCurso(CtrlPrograma c) {
-		this.ctrlPai = c;
+	private JanelaCurso janela;
+	private Curso novo;
+
+	public CtrlIncluirCurso(CtrlAbstrato c) {
+		super(c);
 		this.janela = new JanelaCurso(this);
-		this.janela.setVisible(true);
+		this.janela.apresentar();
 	}
 	
 	public void incluirNovoCurso(int codigo, String nome) {
 		try {
-			Curso novo = new Curso(codigo, nome);
+			this.novo = new Curso(codigo, nome);
 			DaoCurso dao = new DaoCurso();
-			dao.adicionar(novo);
-			JOptionPane.showMessageDialog(null, "Curso Criado!");
+			dao.adicionar(this.novo);
+			this.janela.notificar("Curso Criado!");
 			this.janela.setVisible(false);
-			this.ctrlPai.incluirCursoFinalizado();
+			this.encerrar();
 		} catch (ModelException e1) {
-			JOptionPane.showMessageDialog(null, e1.getMessage());
+			this.janela.notificar(e1.getMessage());
 		}
 	}
+	public Object getBemTangivel() {
+		return this.novo;
+	}
 	
-	public void cancelarCasoDeUso() {
+	
+	public void encerrar() {
 		this.janela.setVisible(false);
-		this.ctrlPai.incluirCursoFinalizado();		
+		if(this.getCtrlpai() instanceof CtrlPrograma) {
+			CtrlPrograma c = (CtrlPrograma)this.getCtrlpai();
+			c.incluirCursoFinalizado();	
+		} else if(this.getCtrlpai() instanceof CtrlIncluirAluno) {
+			CtrlIncluirAluno c = (CtrlIncluirAluno)this.getCtrlpai();
+			c.incluirCursoFinalizado();	
+		}
 	}
 }
