@@ -1,5 +1,6 @@
 package controller;
 
+import controller.cursos.CtrlIncluirCurso;
 import model.Aluno;
 import model.Curso;
 import model.ModelException;
@@ -18,7 +19,7 @@ public class CtrlIncluirAluno extends CtrlAbstrato {
 		this.janela = new JanelaAluno(this);
 		this.janela.setVisible(true);
 		DaoCurso dao = new DaoCurso();
-		this.janela.atualizarCursos(dao.obterTodos().toArray());
+		this.janela.atualizarCursos(dao.obterTodos());
 		this.janela.apresentar();
 	}
 

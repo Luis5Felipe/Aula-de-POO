@@ -1,5 +1,7 @@
 package viewer;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,8 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
 
-import controller.CtrlIncluirCurso;
+import controller.CtrlAbstrato;
+import controller.cursos.CtrlAbstratoCursos;
+import controller.cursos.CtrlExcluirCursos;
+import model.Curso;
 
 public class JanelaCurso extends JanelaAbstrata {
 
@@ -18,11 +24,39 @@ public class JanelaCurso extends JanelaAbstrata {
 	private JPanel JanelaCurso;
 	private JTextField tfCodigo;
 	private JTextField tfNome;
-	private CtrlIncluirCurso ctrl;
+	private JPanel contentPane;
 
-	public JanelaCurso(CtrlIncluirCurso c) {
-		super(c);
-		this.ctrl = c;
+	public JanelaCurso(CtrlAbstrato ctrl, Curso curso) {
+		
+		this(ctrl);
+		
+		if (curso != null) {
+			tfCodigo.setText(String.valueOf(curso.getCodigo()));
+			tfNome.setText(curso.getNome());
+		}
+		
+		if(ctrl instanceof CtrlExcluirCursos) {
+			tfCodigo.setEnabled(false);
+			tfNome.setEnabled(false);
+			
+			JLabel lbMsg = new JLabel("Deseja excluir esse Departamento?");
+			lbMsg.setForeground(new Color(106, 255, 0));
+			lbMsg.setFont(new Font("Calibri", Font.PLAIN, 14));
+			lbMsg.setBounds(139, 150, 187, 14);
+			contentPane.add(lbMsg);
+		}
+	}
+	
+	
+	public JanelaCurso(CtrlAbstrato ctrl) {
+		super(ctrl);
+		
+		contentPane = new JPanel(); 
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		JanelaCurso = new JPanel();
@@ -58,7 +92,8 @@ public class JanelaCurso extends JanelaAbstrata {
 			public void actionPerformed(ActionEvent e) {
 				String nome = tfNome.getText();
 				int codigo = Integer.parseInt(tfCodigo.getText());
-				ctrl.incluirNovoCurso(codigo, nome);
+				CtrlAbstratoCursos ctrl = (CtrlAbstratoCursos) getCtrl();
+				ctrl.efetuar(codigo, nome);
 			}
 		});
 		salvar.setBounds(52, 155, 89, 23);

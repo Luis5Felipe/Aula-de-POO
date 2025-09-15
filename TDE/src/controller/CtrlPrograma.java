@@ -1,44 +1,42 @@
 package controller;
 
-import javax.swing.JOptionPane;
-
+import controller.cursos.CtrlManterCursos;
 import viewer.JanelaPrincipal;
 
 public class CtrlPrograma extends CtrlAbstrato {
-	
+
 	private JanelaPrincipal janelaPrincipal;
-	private CtrlIncluirAluno ctrlIncluirAluno;
-	private CtrlIncluirCurso ctrlIncluirCurso;
-	
+	private CtrlManterCursos ctrlManterCursos;
+	private CtrlIncluirAluno ctrlIncluirEAluno;
+
 	public CtrlPrograma() {
 		super(null);
 		this.janelaPrincipal = new JanelaPrincipal(this);
 		this.janelaPrincipal.apresentar();
 	}
-	
-	
-	public void iniciarIncluirCurso() {
-		if(this.ctrlIncluirCurso == null)
-			this.ctrlIncluirCurso = new CtrlIncluirCurso(this);
+
+	public void iniciarManterCursos() {
+		if (this.ctrlManterCursos == null)
+			this.ctrlManterCursos = new CtrlManterCursos(this);
 		else
 			this.janelaPrincipal.notificar("Este Caso de Uso já está em execução!");
 	}
-	
-	public void incluirCursoFinalizado() {
-		this.ctrlIncluirCurso = null;		
+
+	public void manterCursosFinalizado() {
+		this.ctrlManterCursos = null;
 	}
-	
+
 	public void iniciarIncluirAluno() {
-		if(this.ctrlIncluirAluno == null)
-			this.ctrlIncluirAluno = new CtrlIncluirAluno(this);
+		if (this.ctrlIncluirEAluno == null)
+			this.ctrlIncluirEAluno = new CtrlIncluirAluno(this);
 		else
 			this.janelaPrincipal.notificar("Este Caso de Uso já está em execução!");
 	}
-	
+
 	public void incluirAlunoFinalizado() {
-		this.ctrlIncluirAluno = null;		
+		this.ctrlIncluirEAluno = null;
 	}
-	
+
 	public void encerrar() {
 		System.exit(0);
 	}
@@ -46,7 +44,7 @@ public class CtrlPrograma extends CtrlAbstrato {
 	public Object getBemTangivel() {
 		return null;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		new CtrlPrograma();
 	}

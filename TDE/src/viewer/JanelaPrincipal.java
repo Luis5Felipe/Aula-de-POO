@@ -30,7 +30,7 @@ public class JanelaPrincipal extends JanelaAbstrata {
 		JButton btCurso = new JButton("curso");
 		btCurso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.iniciarIncluirCurso();
+				ctrl.iniciarManterCursos();
 			}
 		});
 		btCurso.setBounds(29, 42, 146, 73);

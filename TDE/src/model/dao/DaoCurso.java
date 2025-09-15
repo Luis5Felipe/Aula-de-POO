@@ -14,8 +14,23 @@ public class DaoCurso {
 	public boolean adicionar(Curso novo) {
 		return DaoCurso.ListaDeCurso.add(novo);
 	}
+	
+	public boolean alterar(Curso curso) {
+		if(DaoCurso.ListaDeCurso.contains(curso))
+			return true;
+		return false;
+	}
+	
+	public boolean excluir(Curso novo) {
+		return DaoCurso.ListaDeCurso.remove(novo);
+	}
 
-	public ArrayList<Curso> obterTodos() {
-		return new ArrayList(DaoCurso.ListaDeCurso);
+	public Curso[] obterTodos() {
+		int qtde = DaoCurso.ListaDeCurso.size();
+		Curso[] copia = new Curso[qtde];
+		int i = 0;
+		for(Curso d : DaoCurso.ListaDeCurso)
+			copia[i++] = d;
+		return copia;
 	}
 }

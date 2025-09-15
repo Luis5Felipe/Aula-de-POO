@@ -59,7 +59,7 @@ public class JanelaAluno extends JanelaAbstrata{
 		contentPane.add(lbCurso);
 
 		DaoCurso daoCurso = new DaoCurso();
-		cbCurso = new JComboBox<>(daoCurso.obterTodos().toArray(new Curso[0]));
+		cbCurso = new JComboBox<>(daoCurso.obterTodos());
 		cbCurso.setBounds(80, 101, 200, 22);
 		contentPane.add(cbCurso);
 
