@@ -73,18 +73,6 @@ public class Empregado implements Comparable<Empregado> {
 		return this.depto;
 	}
 
-	public void setDepto(Departamento depto) throws ModelException {
-		Empregado.validarDepto(depto);
-		// Verificando se o empregado pertencia a um outro departamento
-		// Se sim, vamos tirá-lo desse departamento
-		if(this.depto != null)
-			this.depto.removerEmpregado(this);		
-		// Associamos o empregado ao departamento novo
-		this.depto = depto;
-		// Notificamos ao novo departamento para adicionar o empregado
-		this.depto.adicionarEmpregado(this);
-	}
-
 	@ManyToMany
 	@JoinTable(
 			name = "empregado_projeto",
@@ -106,6 +94,19 @@ public class Empregado implements Comparable<Empregado> {
 	public void removerProjeto(Projeto p) {
 		projetos.remove(p);
 		p.getEmpregados().remove(this);
+	}
+
+
+	public void setDepto(Departamento depto) throws ModelException {
+		Empregado.validarDepto(depto);
+		// Verificando se o empregado pertencia a um outro departamento
+		// Se sim, vamos tirá-lo desse departamento
+		if(this.depto != null)
+			this.depto.removerEmpregado(this);		
+		// Associamos o empregado ao departamento novo
+		this.depto = depto;
+		// Notificamos ao novo departamento para adicionar o empregado
+		this.depto.adicionarEmpregado(this);
 	}
 		
 	public static void validarCpf(String cpf) throws ModelException {
