@@ -110,7 +110,7 @@ public class Empregado implements Comparable<Empregado> {
 	}
 		
 	public static void validarCpf(String cpf) throws ModelException {
-		if (cpf == null || cpf.length() == 0)
+		if (cpf == null || cpf.isEmpty())
 			throw new ModelException("O cpf do empregado não pode ser nulo!");
 		String expRegular = "[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}";
 		if(!cpf.matches(expRegular))
